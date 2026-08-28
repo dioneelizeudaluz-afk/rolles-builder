@@ -100,6 +100,9 @@ ${prompt}
         })
       }
     );
+    generationConfig: {
+  responseMimeType: "application/json"
+    }
 
     const data = await response.json();
 
