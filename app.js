@@ -88,6 +88,72 @@ function renderProject(project) {
 }
 
 function saveCurrentFile() {
+  function runPreview() {
+  if (!currentProject || !currentProject.files) {
+    $("#output").textContent =
+      "Gere um projeto primeiro.";
+    return;
+  }
+
+  const files = currentProject.files;
+
+  const htmlFile = files.find(
+    (file) => file.path === "index.html"
+  );
+
+  const cssFile = files.find(
+    (file) =>
+      file.path.endsWith(".css")
+  );
+
+  const jsFile = files.find(
+    (file) =>
+      file.path.endsWith(".jsx") ||
+      file.path.endsWith(".js")
+  );
+
+  if (!htmlFile) {
+    $("#output").textContent =
+      "O projeto não possui index.html para visualizar.";
+    return;
+  }
+
+  let html = htmlFile.content || "";
+
+  if (cssFile) {
+    html = html.replace(
+      "</head>",
+      `<style>${cssFile.content || ""}</style></head>`
+    );
+  }
+
+  if (jsFile) {
+    html = html.replace(
+      "</body>",
+      `<script type="module">
+${jsFile.content || ""}
+<\/script></body>`
+    );
+  }
+
+  const frame = $("#previewFrame");
+
+  if (frame) {
+    frame.srcdoc = html;
+  }
+
+  if ($("#output")) {
+    $("#output").textContent =
+      "Preview executado.";
+  }
+}
+
+if ($("#runPreview")) {
+  $("#runPreview").addEventListener(
+    "click",
+    runPreview
+  );
+}
   if (!currentProject || !currentFile) return;
 
   currentFile.content =
