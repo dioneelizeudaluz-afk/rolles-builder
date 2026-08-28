@@ -1,8 +1,6 @@
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Método não permitido"
-    });
+    return res.status(405).json({ error: "Método não permitido." });
   }
 
   try {
@@ -14,68 +12,71 @@ export default async function handler(req, res) {
       });
     }
 
-    const systemPrompt = `
+    const instruction = `
 Você é o motor de desenvolvimento do Rolles.
 
-Sua função é analisar o pedido do utilizador e planejar um aplicativo web real.
+O utilizador vai pedir para criar ou modificar um aplicativo web.
 
-O aplicativo pode ser qualquer tipo de projeto: SaaS, marketplace,
-sistema de gestão, dashboard, site, ferramenta interna, plataforma,
-aplicativo educacional, sistema de documentos, etc.
+Sua tarefa é criar uma especificação e os arquivos necessários para um MVP
+funcional.
 
-Analise:
-- objetivo
-- páginas
-- funcionalidades
-- componentes
-- dados necessários
-- autenticação
-- banco de dados
-- APIs
-- segurança
-- responsividade
+O projeto pode ser qualquer tipo de aplicativo web.
 
-IMPORTANTE:
-Nesta etapa NÃO gere código completo.
-Gere somente uma especificação estruturada do projeto.
+Gere código REAL e funcional.
 
-Responda EXATAMENTE neste formato JSON:
+REGRAS:
+
+1. Crie uma interface moderna, bonita e responsiva.
+2. Use React + Vite quando for apropriado.
+3. Use componentes reutilizáveis.
+4. Não invente funcionalidades impossíveis.
+5. Não use dados falsos quando uma base de dados real for necessária.
+6. Quando o projeto precisar de banco de dados, prepare a integração com Supabase.
+7. Quando precisar de autenticação, prepare autenticação real.
+8. Não coloque chaves secretas dentro do código frontend.
+9. Gere apenas os arquivos realmente necessários.
+10. O código deve ser completo, não apenas exemplos.
+
+RESPONDA SOMENTE COM JSON VÁLIDO.
+
+Formato obrigatório:
 
 {
   "projectName": "Nome do projeto",
-  "description": "Descrição curta",
-  "pages": [
+  "description": "Descrição",
+  "stack": {
+    "frontend": "React + Vite",
+    "database": "Supabase"
+  },
+  "files": [
     {
-      "name": "Nome da página",
-      "purpose": "Objetivo da página"
+      "path": "package.json",
+      "content": "código completo do arquivo"
+    },
+    {
+      "path": "index.html",
+      "content": "código completo do arquivo"
+    },
+    {
+      "path": "src/App.jsx",
+      "content": "código completo do arquivo"
     }
-  ],
-  "features": [
-    "Funcionalidade 1",
-    "Funcionalidade 2"
   ],
   "database": {
     "required": true,
-    "tables": [
-      {
-        "name": "nome_da_tabela",
-        "purpose": "Para que serve"
-      }
-    ]
-  },
-  "authentication": {
-    "required": false,
-    "type": "Nenhuma"
-  },
-  "recommendedStack": {
-    "frontend": "React",
-    "backend": "API",
-    "database": "Supabase"
+    "sql": "SQL completo para criar as tabelas necessárias"
   }
 }
 
-Não coloque markdown.
-Não coloque explicações antes ou depois do JSON.
+IMPORTANTE:
+- Não use markdown.
+- Não coloque \`\`\`.
+- Não escreva explicações fora do JSON.
+- Cada arquivo deve ter seu código completo dentro de "content".
+- O JSON precisa ser válido.
+
+PEDIDO DO UTILIZADOR:
+${prompt}
 `;
 
     const response = await fetch(
@@ -91,10 +92,7 @@ Não coloque explicações antes ou depois do JSON.
             {
               parts: [
                 {
-                  text:
-                    systemPrompt +
-                    "\n\nPEDIDO DO UTILIZADOR:\n" +
-                    prompt
+                  text: instruction
                 }
               ]
             }
@@ -126,9 +124,9 @@ Não coloque explicações antes ou depois do JSON.
 
     try {
       project = JSON.parse(text);
-    } catch {
+    } catch (error) {
       return res.status(500).json({
-        error: "A IA retornou um formato inválido.",
+        error: "A IA retornou JSON inválido.",
         raw: text
       });
     }
@@ -143,4 +141,4 @@ Não coloque explicações antes ou depois do JSON.
       error: "Erro interno do servidor."
     });
   }
-                  }
+}
