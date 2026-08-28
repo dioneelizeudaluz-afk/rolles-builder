@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Rolles Builder</title>
+  <title>Rolles — AI Builder</title>
 
   <style>
     * {
@@ -14,9 +14,9 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #0b1118;
-      color: #f5f7fa;
+      font-family: Inter, Arial, sans-serif;
+      background: #07110d;
+      color: #f4fff8;
       min-height: 100vh;
     }
 
@@ -30,228 +30,343 @@
       cursor: pointer;
     }
 
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+
+    header {
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      background: rgba(7,17,13,.88);
+      backdrop-filter: blur(18px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: #20d879;
+      color: #041009;
+      font-weight: 900;
+    }
+
+    .menu-button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      background: rgba(255,255,255,.04);
+      color: white;
+      font-size: 24px;
+    }
+
+    .menu-button:hover {
+      background: rgba(32,216,121,.12);
+    }
+
+    /* MENU */
+
+    .menu {
+      position: absolute;
+      top: 60px;
+      right: 18px;
+      width: 220px;
+      padding: 8px;
+      background: #102019;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+      display: none;
+      z-index: 50;
+    }
+
+    .menu.open {
+      display: block;
+    }
+
+    .menu button {
+      width: 100%;
+      padding: 12px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: #dce9e2;
+      text-align: left;
+    }
+
+    .menu button:hover {
+      background: rgba(32,216,121,.1);
+      color: white;
+    }
+
+    /* MAIN */
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 950px;
+      margin: auto;
+      padding: 70px 20px 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(32,216,121,.09);
+      border: 1px solid rgba(32,216,121,.2);
+      color: #71efad;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(38px, 7vw, 64px);
+      line-height: 1.05;
+      letter-spacing: -2.5px;
+      margin-bottom: 14px;
+    }
+
+    .gradient {
+      color: #20d879;
+    }
+
+    .subtitle {
+      max-width: 620px;
+      margin: auto;
+      color: #91a49a;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    /* PROMPT */
+
+    .prompt-box {
+      width: 100%;
+      max-width: 760px;
+      background: #0d1b14;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow:
+        0 20px 70px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.03);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 130px;
+      resize: vertical;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: white;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    textarea::placeholder {
+      color: #63766c;
+    }
+
+    .prompt-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .hint {
+      color: #65776e;
+      font-size: 13px;
+    }
+
+    .generate {
+      border: 0;
+      border-radius: 13px;
+      padding: 12px 18px;
+      background: #20d879;
+      color: #041009;
+      font-weight: 800;
+      transition: .2s;
+    }
+
+    .generate:hover {
+      transform: translateY(-1px);
+      background: #38e58c;
+    }
+
+    .generate:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* SUGGESTIONS */
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 22px;
+    }
+
+    .suggestion {
+      padding: 9px 13px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.035);
+      color: #aebdb5;
+      font-size: 13px;
+    }
+
+    .suggestion:hover {
+      border-color: rgba(32,216,121,.35);
+      color: white;
+    }
+
+    /* OUTPUT */
+
+    #output {
+      width: 100%;
+      max-width: 760px;
+      margin-top: 24px;
+      white-space: pre-wrap;
+      color: #9eb0a7;
+      font-size: 14px;
+    }
+
     .hidden {
       display: none !important;
     }
 
-    .app {
-      min-height: 100vh;
-      display: flex;
-    }
+    /* EDITOR */
 
-    .sidebar {
-      width: 230px;
-      background: #111923;
-      border-right: 1px solid #263342;
-      padding: 20px;
-    }
-
-    .logo {
-      font-size: 25px;
-      font-weight: bold;
-      margin-bottom: 30px;
-    }
-
-    .logo span {
-      color: #5eead4;
-    }
-
-    .nav {
+    #editor {
       width: 100%;
-      padding: 12px;
-      margin-bottom: 8px;
-      border: 0;
-      border-radius: 8px;
-      background: transparent;
-      color: #b9c4d0;
-      text-align: left;
-    }
-
-    .nav:hover,
-    .nav.active {
-      background: #1c2937;
-      color: white;
-    }
-
-    .main {
-      flex: 1;
+      max-width: 1200px;
       padding: 25px;
-      min-width: 0;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-    }
-
-    .topbar h1 {
-      font-size: 24px;
-    }
-
-    .builder {
-      max-width: 900px;
-      margin: auto;
-    }
-
-    .card {
-      background: #111923;
-      border: 1px solid #263342;
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 18px;
-    }
-
-    .card h2 {
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      color: #9aa8b7;
-      margin-bottom: 15px;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      background: #0b1118;
-      border: 1px solid #2b3948;
-      color: white;
-      border-radius: 9px;
-      padding: 13px;
-      outline: none;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: #5eead4;
-    }
-
-    textarea {
-      min-height: 160px;
-      resize: vertical;
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-      flex-wrap: wrap;
-    }
-
-    .primary {
-      background: #5eead4;
-      color: #071014;
-      border: 0;
-      border-radius: 9px;
-      padding: 12px 18px;
-      font-weight: bold;
-    }
-
-    .primary:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
-
-    .secondary {
-      background: #1b2734;
-      color: white;
-      border: 1px solid #2b3948;
-      border-radius: 9px;
-      padding: 12px 18px;
-    }
-
-    .output {
-      white-space: pre-wrap;
-      word-break: break-word;
-      background: #080d13;
-      border: 1px solid #263342;
-      border-radius: 10px;
-      padding: 15px;
-      min-height: 100px;
-      color: #dbe4ed;
     }
 
     .editor-layout {
       display: grid;
-      grid-template-columns: 240px 1fr;
+      grid-template-columns: 230px 1fr;
       gap: 15px;
     }
 
-    .file-panel {
-      background: #111923;
-      border: 1px solid #263342;
-      border-radius: 12px;
-      padding: 12px;
+    .panel {
+      background: #0d1b14;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      overflow: hidden;
     }
 
-    .file-panel h3 {
-      margin-bottom: 12px;
+    .panel-title {
+      padding: 13px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      font-weight: 700;
+    }
+
+    #fileList {
+      padding: 8px;
     }
 
     .file-item {
       width: 100%;
-      background: transparent;
-      color: #c7d1dc;
       border: 0;
+      background: transparent;
+      color: #aabbb2;
       padding: 10px;
-      border-radius: 7px;
       text-align: left;
-      margin-bottom: 4px;
-      word-break: break-all;
+      border-radius: 9px;
     }
 
     .file-item:hover {
-      background: #1c2937;
+      background: rgba(32,216,121,.09);
       color: white;
-    }
-
-    .code-panel {
-      background: #111923;
-      border: 1px solid #263342;
-      border-radius: 12px;
-      padding: 12px;
-      min-width: 0;
-    }
-
-    .file-title {
-      margin-bottom: 10px;
-      color: #9aa8b7;
     }
 
     #codeEditor {
       width: 100%;
       min-height: 500px;
+      border: 0;
+      outline: 0;
       resize: vertical;
+      padding: 18px;
+      background: #07100c;
+      color: #d9e7df;
       font-family: monospace;
-      font-size: 14px;
-      line-height: 1.5;
+      font-size: 13px;
+      line-height: 1.55;
     }
 
+    .editor-top {
+      padding: 13px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .save-button {
+      border: 0;
+      border-radius: 9px;
+      padding: 8px 12px;
+      background: #20d879;
+      color: #041009;
+      font-weight: 700;
+    }
+
+    /* RESPONSIVE */
+
     @media (max-width: 700px) {
-      .app {
-        display: block;
+      main {
+        padding-top: 48px;
       }
 
-      .sidebar {
-        width: 100%;
-        border-right: 0;
-        border-bottom: 1px solid #263342;
+      .prompt-bottom {
+        align-items: flex-end;
+        gap: 10px;
       }
 
-      .nav {
-        width: auto;
-        display: inline-block;
-        margin-right: 5px;
+      .hint {
+        display: none;
       }
 
       .editor-layout {
         grid-template-columns: 1fr;
       }
 
-      .main {
-        padding: 15px;
+      #editor {
+        padding: 12px;
       }
     }
   </style>
@@ -261,251 +376,506 @@
 
 <div class="app">
 
-  <aside class="sidebar">
+  <header>
     <div class="logo">
-      R<span>o</span>lles
+      <div class="logo-mark">R</div>
+      <span>Rolles</span>
     </div>
 
-    <button class="nav active" data-view="builder">
-      Builder
-    </button>
-
-    <button class="nav" data-view="projects">
-      Projetos
-    </button>
-
-    <button class="nav" data-view="files">
-      Arquivos
-    </button>
-
-    <button class="nav" data-view="history">
-      Histórico
-    </button>
-  </aside>
-
-  <main class="main">
-
-    <div class="topbar">
-      <h1 id="title">Novo projeto</h1>
-    </div>
-
-    <!-- BUILDER -->
-
-    <section id="builderView" data-view="builder">
-
-      <div class="builder">
-
-        <div class="card">
-
-          <h2>Criar um projeto</h2>
-
-          <p>
-            Descreva o aplicativo que você deseja criar.
-          </p>
-
-          <input
-            id="projectName"
-            type="text"
-            placeholder="Nome do projeto"
-          >
-
-          <br><br>
-
-          <textarea
-            id="prompt"
-            placeholder="Exemplo: Crie um marketplace de serviços para Moçambique..."
-          ></textarea>
-
-          <div class="actions">
-
-            <button
-              id="generate"
-              class="primary"
-            >
-              Gerar projeto
-            </button>
-
-            <button
-              id="newProject"
-              class="secondary"
-            >
-              Novo projeto
-            </button>
-
-          </div>
-
-        </div>
-
-        <div class="card">
-
-          <h2>Resultado</h2>
-
-          <div
-            id="output"
-            class="output"
-          >
-            Escreva o que deseja criar.
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- EDITOR -->
-
-    <section
-      id="editor"
-      data-view="editor"
-      class="hidden"
-    >
-
-      <div class="card">
-
-        <h2 id="projectNameDisplay">
-          Projeto
-        </h2>
-
-        <p id="projectDescription"></p>
-
-      </div>
-
-      <div class="editor-layout">
-
-        <div class="file-panel">
-
-          <h3>Arquivos</h3>
-
-          <div id="fileList"></div>
-
-        </div>
-
-        <div class="code-panel">
-
-          <div
-            id="currentFileName"
-            class="file-title"
-          >
-            Nenhum arquivo selecionado
-          </div>
-
-          <textarea
-            id="codeEditor"
-            spellcheck="false"
-            placeholder="O código do arquivo aparecerá aqui..."
-          ></textarea>
-          <div style="margin-top:20px;">
-  <h3 style="margin-bottom:10px;">Preview</h3>
-
-  <iframe
-    id="previewFrame"
-    title="Preview do projeto"
-    style="
-      width:100%;
-      height:500px;
-      border:1px solid #263342;
-      border-radius:12px;
-      background:white;
-    "
-  ></iframe>
-
-  <div class="actions">
     <button
-      id="runPreview"
-      class="primary"
+      id="menuButton"
+      class="menu-button"
+      aria-label="Menu"
     >
-      Executar Preview
+      ⋮
     </button>
-  </div>
-          </div>
 
-          <div class="actions">
+    <div id="menu" class="menu">
+      <button id="newProject">Novo projeto</button>
+      <button>Meus projetos</button>
+      <button>Histórico</button>
+      <button>Configurações</button>
+      <button>Minha conta</button>
+    </div>
+  </header>
 
-            <button
-              id="saveFile"
-              class="primary"
-            >
-              Salvar arquivo
-            </button>
+  <!-- HOME -->
 
-          </div>
+  <main id="home">
 
-        </div>
+    <div class="hero">
+
+      <div class="badge">
+        AI APP BUILDER
+      </div>
+
+      <h1>
+        O que vamos
+        <span class="gradient">criar hoje?</span>
+      </h1>
+
+      <p class="subtitle">
+        Descreva a sua ideia e o Rolles transforma-a
+        em um projeto digital.
+      </p>
+
+    </div>
+
+    <div class="prompt-box">
+
+      <textarea
+        id="prompt"
+        placeholder="Ex: Crie um aplicativo de entregas para Maputo com clientes, pedidos, entregadores e painel de administração..."
+      ></textarea>
+
+      <div class="prompt-bottom">
+
+        <span class="hint">
+          Descreva o que deseja criar
+        </span>
+
+        <button
+          id="generate"
+          class="generate"
+        >
+          Criar projeto
+        </button>
 
       </div>
 
-    </section>
+    </div>
 
+    <div class="suggestions">
 
-    <!-- PROJETOS -->
+      <button class="suggestion"
+        data-prompt="Crie um SaaS moderno para pequenas empresas.">
+        Criar SaaS
+      </button>
 
-    <section
-      id="projectsView"
-      data-view="projects"
-      class="hidden"
-    >
+      <button class="suggestion"
+        data-prompt="Crie um site profissional e moderno para uma empresa.">
+        Criar site
+      </button>
 
-      <div class="card">
+      <button class="suggestion"
+        data-prompt="Crie um aplicativo mobile-first moderno.">
+        Criar app
+      </button>
 
-        <h2>Projetos</h2>
+      <button class="suggestion"
+        data-prompt="Crie um mini jogo web divertido e responsivo.">
+        Criar jogo
+      </button>
 
-        <div id="projectList"></div>
+    </div>
 
-      </div>
-
-    </section>
-
-
-    <!-- ARQUIVOS -->
-
-    <section
-      id="filesView"
-      data-view="files"
-      class="hidden"
-    >
-
-      <div class="card">
-
-        <h2>Arquivos</h2>
-
-        <p>
-          Os arquivos do projeto selecionado aparecerão aqui.
-        </p>
-
-        <div id="fileListSecondary"></div>
-
-      </div>
-
-    </section>
-
-
-    <!-- HISTÓRICO -->
-
-    <section
-      id="historyView"
-      data-view="history"
-      class="hidden"
-    >
-
-      <div class="card">
-
-        <h2>Histórico</h2>
-
-        <p>
-          Histórico dos projetos gerados pelo Rolles.
-        </p>
-
-      </div>
-
-    </section>
+    <div id="output"></div>
 
   </main>
 
+  <!-- EDITOR -->
+
+  <section
+    id="editor"
+    class="hidden"
+  >
+
+    <div class="editor-layout">
+
+      <div class="panel">
+
+        <div class="panel-title">
+          Arquivos
+        </div>
+
+        <div id="fileList"></div>
+
+      </div>
+
+      <div class="panel">
+
+        <div class="editor-top">
+
+          <span id="currentFileName">
+            Nenhum arquivo
+          </span>
+
+          <button
+            id="saveFile"
+            class="save-button"
+          >
+            Salvar
+          </button>
+
+        </div>
+
+        <textarea
+          id="codeEditor"
+          spellcheck="false"
+          placeholder="O código aparecerá aqui..."
+        ></textarea>
+
+        <div style="padding:15px;">
+          <h3 style="margin-bottom:10px;">
+            Preview
+          </h3>
+
+          <iframe
+            id="previewFrame"
+            title="Preview"
+            style="
+              width:100%;
+              height:500px;
+              border:1px solid #26352d;
+              border-radius:12px;
+              background:white;
+            "
+          ></iframe>
+
+          <button
+            id="runPreview"
+            class="generate"
+            style="margin-top:12px;"
+          >
+            Executar Preview
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
 </div>
 
-<script src="/app.js"></script>
+<script>
+
+  const $ = (selector) =>
+    document.querySelector(selector);
+
+  const menuButton =
+    $("#menuButton");
+
+  const menu =
+    $("#menu");
+
+  const prompt =
+    $("#prompt");
+
+  /* MENU */
+
+  menuButton.addEventListener(
+    "click",
+    () => {
+      menu.classList.toggle("open");
+    }
+  );
+
+  document.addEventListener(
+    "click",
+    (event) => {
+
+      if (
+        !menu.contains(event.target) &&
+        !menuButton.contains(event.target)
+      ) {
+        menu.classList.remove("open");
+      }
+
+    }
+  );
+
+  /* SUGESTÕES */
+
+  document
+    .querySelectorAll(".suggestion")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          prompt.value =
+            button.dataset.prompt;
+
+          prompt.focus();
+
+        }
+      );
+
+    });
+
+  /* EDITOR */
+
+  let currentProject = null;
+  let currentFile = null;
+
+  function openEditor(project) {
+
+    currentProject = project;
+
+    $("#home")
+      .classList.add("hidden");
+
+    $("#editor")
+      .classList.remove("hidden");
+
+    renderFiles();
+
+  }
+
+  function renderFiles() {
+
+    const fileList =
+      $("#fileList");
+
+    fileList.innerHTML = "";
+
+    const files =
+      currentProject?.files || [];
+
+    files.forEach(
+      (file, index) => {
+
+        const button =
+          document.createElement("button");
+
+        button.className =
+          "file-item";
+
+        button.textContent =
+          "📄 " + file.path;
+
+        button.onclick = () =>
+          openFile(file);
+
+        fileList.appendChild(
+          button
+        );
+
+        if (index === 0) {
+          openFile(file);
+        }
+
+      }
+    );
+
+  }
+
+  function openFile(file) {
+
+    currentFile = file;
+
+    $("#currentFileName")
+      .textContent =
+      file.path;
+
+    $("#codeEditor")
+      .value =
+      file.content || "";
+
+  }
+
+  /* GERAR */
+
+  $("#generate")
+    .addEventListener(
+      "click",
+      async () => {
+
+        const text =
+          prompt.value.trim();
+
+        if (!text) {
+
+          $("#output")
+            .textContent =
+            "Escreva uma ideia primeiro.";
+
+          return;
+
+        }
+
+        const button =
+          $("#generate");
+
+        button.disabled = true;
+
+        button.textContent =
+          "A criar...";
+
+        $("#output")
+          .textContent =
+          "O Rolles está a construir o projeto...";
+
+        try {
+
+          const response =
+            await fetch(
+              "/api/generate",
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify({
+                    prompt: text
+                  })
+              }
+            );
+
+          const data =
+            await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              data.error ||
+              "Erro ao gerar projeto."
+            );
+          }
+
+          if (!data.project) {
+            throw new Error(
+              "A IA não retornou um projeto."
+            );
+          }
+
+          currentProject =
+            data.project;
+
+          localStorage.setItem(
+            "rolles_current_project",
+            JSON.stringify(
+              currentProject
+            )
+          );
+
+          $("#output")
+            .textContent =
+            "Projeto criado com sucesso.";
+
+          openEditor(
+            currentProject
+          );
+
+        } catch (error) {
+
+          console.error(error);
+
+          $("#output")
+            .textContent =
+            "Erro: " +
+            error.message;
+
+        } finally {
+
+          button.disabled =
+            false;
+
+          button.textContent =
+            "Criar projeto";
+
+        }
+
+      }
+    );
+
+  /* SALVAR */
+
+  $("#saveFile")
+    .addEventListener(
+      "click",
+      () => {
+
+        if (
+          !currentProject ||
+          !currentFile
+        ) return;
+
+        currentFile.content =
+          $("#codeEditor").value;
+
+        localStorage.setItem(
+          "rolles_current_project",
+          JSON.stringify(
+            currentProject
+          )
+        );
+
+      }
+    );
+
+  /* PREVIEW */
+
+  $("#runPreview")
+    .addEventListener(
+      "click",
+      () => {
+
+        if (!currentProject) {
+          return;
+        }
+
+        const files =
+          currentProject.files || [];
+
+        const htmlFile =
+          files.find(
+            file =>
+              file.path ===
+              "index.html"
+          );
+
+        if (!htmlFile) {
+
+          $("#output")
+            .textContent =
+            "Este projeto ainda não possui um index.html.";
+
+          return;
+
+        }
+
+        $("#previewFrame")
+          .srcdoc =
+          htmlFile.content || "";
+
+      }
+    );
+
+  /* NOVO PROJETO */
+
+  $("#newProject")
+    .addEventListener(
+      "click",
+      () => {
+
+        menu.classList.remove(
+          "open"
+        );
+
+        $("#editor")
+          .classList.add(
+            "hidden"
+          );
+
+        $("#home")
+          .classList.remove(
+            "hidden"
+          );
+
+        prompt.value = "";
+
+      }
+    );
+
+</script>
 
 </body>
-      </html>
+    </html>
