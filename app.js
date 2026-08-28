@@ -98,8 +98,16 @@ $("#generate").onclick = async () => {
       );
     }
 
-    $("#output").textContent =
-      data.result || "A IA não retornou uma resposta.";
+    if (data.project) {
+  $("#output").textContent = JSON.stringify(
+    data.project,
+    null,
+    2
+  );
+} else {
+  $("#output").textContent =
+    "A IA não retornou uma resposta.";
+      }
 
   } catch (error) {
     $("#output").textContent =
