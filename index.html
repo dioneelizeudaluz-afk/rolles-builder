@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Rolles — AI Development Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="grid"></div>
+  <header class="topbar">
+    <div class="brand"><span class="mark">R</span><span>ROLLES</span></div>
+    <div class="status"><i></i> LOCAL BUILDER</div>
+  </header>
+
+  <main class="shell">
+    <aside class="sidebar">
+      <button class="new-project" id="newProject">+ Novo projeto</button>
+      <nav>
+        <button class="nav active" data-view="builder">▣ Builder</button>
+        <button class="nav" data-view="projects">◫ Projetos</button>
+        <button class="nav" data-view="files">⌘ Arquivos</button>
+        <button class="nav" data-view="history">↶ Histórico</button>
+      </nav>
+      <div class="side-foot">
+        <div>ROLLES ENGINE</div>
+        <small>v0.1 • preparado para API externa</small>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="page-head">
+        <div>
+          <span class="eyebrow">AI DEVELOPMENT ENVIRONMENT</span>
+          <h1 id="title">Novo projeto</h1>
+        </div>
+        <button class="ghost" id="saveProject">Guardar</button>
+      </div>
+
+      <div id="builderView" class="view">
+        <div class="card hero-card">
+          <div class="card-label">DESCREVA O QUE QUER CONSTRUIR</div>
+          <textarea id="prompt" placeholder="Ex.: Crie um marketplace de serviços com cadastro, pesquisa, painel de administrador e base de dados."></textarea>
+          <div class="actions">
+            <button class="primary" id="generate">Gerar plano</button>
+            <span class="hint">A IA externa será conectada depois.</span>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Projeto</div>
+            <input id="projectName" placeholder="Nome do projeto">
+            <div class="mini-grid">
+              <div><span>Stack</span><b>Web</b></div>
+              <div><span>Banco</span><b>Supabase</b></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Plano gerado</div>
+            <pre id="output">Escreva um prompt e clique em “Gerar plano”.</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="projectsView" class="view hidden">
+        <div class="card"><div class="card-title">Meus projetos</div><div id="projectList" class="list"></div></div>
+      </div>
+
+      <div id="filesView" class="view hidden">
+        <div class="card">
+          <div class="card-title">Arquivos do projeto</div>
+          <div class="file-row"><span>index.html</span><span>HTML</span></div>
+          <div class="file-row"><span>style.css</span><span>CSS</span></div>
+          <div class="file-row"><span>app.js</span><span>JavaScript</span></div>
+          <p class="muted">O editor completo será ligado na próxima etapa.</p>
+        </div>
+      </div>
+
+      <div id="historyView" class="view hidden">
+        <div class="card"><div class="card-title">Histórico</div><p class="muted">Nenhuma alteração registrada ainda.</p></div>
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
