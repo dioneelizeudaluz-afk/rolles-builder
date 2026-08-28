@@ -1,87 +1,487 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Rolles — AI Development Builder</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Rolles Builder</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b1118;
+      color: #f5f7fa;
+      min-height: 100vh;
+    }
+
+    button,
+    textarea,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 230px;
+      background: #111923;
+      border-right: 1px solid #263342;
+      padding: 20px;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .logo span {
+      color: #5eead4;
+    }
+
+    .nav {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 8px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #b9c4d0;
+      text-align: left;
+    }
+
+    .nav:hover,
+    .nav.active {
+      background: #1c2937;
+      color: white;
+    }
+
+    .main {
+      flex: 1;
+      padding: 25px;
+      min-width: 0;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .topbar h1 {
+      font-size: 24px;
+    }
+
+    .builder {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .card {
+      background: #111923;
+      border: 1px solid #263342;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .card h2 {
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #9aa8b7;
+      margin-bottom: 15px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      background: #0b1118;
+      border: 1px solid #2b3948;
+      color: white;
+      border-radius: 9px;
+      padding: 13px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #5eead4;
+    }
+
+    textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .primary {
+      background: #5eead4;
+      color: #071014;
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 18px;
+      font-weight: bold;
+    }
+
+    .primary:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .secondary {
+      background: #1b2734;
+      color: white;
+      border: 1px solid #2b3948;
+      border-radius: 9px;
+      padding: 12px 18px;
+    }
+
+    .output {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #080d13;
+      border: 1px solid #263342;
+      border-radius: 10px;
+      padding: 15px;
+      min-height: 100px;
+      color: #dbe4ed;
+    }
+
+    .editor-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 15px;
+    }
+
+    .file-panel {
+      background: #111923;
+      border: 1px solid #263342;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .file-panel h3 {
+      margin-bottom: 12px;
+    }
+
+    .file-item {
+      width: 100%;
+      background: transparent;
+      color: #c7d1dc;
+      border: 0;
+      padding: 10px;
+      border-radius: 7px;
+      text-align: left;
+      margin-bottom: 4px;
+      word-break: break-all;
+    }
+
+    .file-item:hover {
+      background: #1c2937;
+      color: white;
+    }
+
+    .code-panel {
+      background: #111923;
+      border: 1px solid #263342;
+      border-radius: 12px;
+      padding: 12px;
+      min-width: 0;
+    }
+
+    .file-title {
+      margin-bottom: 10px;
+      color: #9aa8b7;
+    }
+
+    #codeEditor {
+      width: 100%;
+      min-height: 500px;
+      resize: vertical;
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 700px) {
+      .app {
+        display: block;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-right: 0;
+        border-bottom: 1px solid #263342;
+      }
+
+      .nav {
+        width: auto;
+        display: inline-block;
+        margin-right: 5px;
+      }
+
+      .editor-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .main {
+        padding: 15px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <div class="grid"></div>
-  <header class="topbar">
-    <div class="brand"><span class="mark">R</span><span>ROLLES</span></div>
-    <div class="status"><i></i> LOCAL BUILDER</div>
-  </header>
 
-  <main class="shell">
-    <aside class="sidebar">
-      <button class="new-project" id="newProject">+ Novo projeto</button>
-      <nav>
-        <button class="nav active" data-view="builder">▣ Builder</button>
-        <button class="nav" data-view="projects">◫ Projetos</button>
-        <button class="nav" data-view="files">⌘ Arquivos</button>
-        <button class="nav" data-view="history">↶ Histórico</button>
-      </nav>
-      <div class="side-foot">
-        <div>ROLLES ENGINE</div>
-        <small>v0.1 • preparado para API externa</small>
-      </div>
-    </aside>
+<div class="app">
 
-    <section class="content">
-      <div class="page-head">
-        <div>
-          <span class="eyebrow">AI DEVELOPMENT ENVIRONMENT</span>
-          <h1 id="title">Novo projeto</h1>
-        </div>
-        <button class="ghost" id="saveProject">Guardar</button>
-      </div>
+  <aside class="sidebar">
+    <div class="logo">
+      R<span>o</span>lles
+    </div>
 
-      <div id="builderView" class="view">
-        <div class="card hero-card">
-          <div class="card-label">DESCREVA O QUE QUER CONSTRUIR</div>
-          <textarea id="prompt" placeholder="Ex.: Crie um marketplace de serviços com cadastro, pesquisa, painel de administrador e base de dados."></textarea>
-          <div class="actions">
-            <button class="primary" id="generate">Gerar plano</button>
-            <span class="hint">A IA externa será conectada depois.</span>
-          </div>
-        </div>
+    <button class="nav active" data-view="builder">
+      Builder
+    </button>
 
-        <div class="two-col">
-          <div class="card">
-            <div class="card-title">Projeto</div>
-            <input id="projectName" placeholder="Nome do projeto">
-            <div class="mini-grid">
-              <div><span>Stack</span><b>Web</b></div>
-              <div><span>Banco</span><b>Supabase</b></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title">Plano gerado</div>
-            <pre id="output">Escreva um prompt e clique em “Gerar plano”.</pre>
-          </div>
-        </div>
-      </div>
+    <button class="nav" data-view="projects">
+      Projetos
+    </button>
 
-      <div id="projectsView" class="view hidden">
-        <div class="card"><div class="card-title">Meus projetos</div><div id="projectList" class="list"></div></div>
-      </div>
+    <button class="nav" data-view="files">
+      Arquivos
+    </button>
 
-      <div id="filesView" class="view hidden">
+    <button class="nav" data-view="history">
+      Histórico
+    </button>
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <h1 id="title">Novo projeto</h1>
+    </div>
+
+    <!-- BUILDER -->
+
+    <section id="builderView" data-view="builder">
+
+      <div class="builder">
+
         <div class="card">
-          <div class="card-title">Arquivos do projeto</div>
-          <div class="file-row"><span>index.html</span><span>HTML</span></div>
-          <div class="file-row"><span>style.css</span><span>CSS</span></div>
-          <div class="file-row"><span>app.js</span><span>JavaScript</span></div>
-          <p class="muted">O editor completo será ligado na próxima etapa.</p>
+
+          <h2>Criar um projeto</h2>
+
+          <p>
+            Descreva o aplicativo que você deseja criar.
+          </p>
+
+          <input
+            id="projectName"
+            type="text"
+            placeholder="Nome do projeto"
+          >
+
+          <br><br>
+
+          <textarea
+            id="prompt"
+            placeholder="Exemplo: Crie um marketplace de serviços para Moçambique..."
+          ></textarea>
+
+          <div class="actions">
+
+            <button
+              id="generate"
+              class="primary"
+            >
+              Gerar projeto
+            </button>
+
+            <button
+              id="newProject"
+              class="secondary"
+            >
+              Novo projeto
+            </button>
+
+          </div>
+
         </div>
+
+        <div class="card">
+
+          <h2>Resultado</h2>
+
+          <div
+            id="output"
+            class="output"
+          >
+            Escreva o que deseja criar.
+          </div>
+
+        </div>
+
       </div>
 
-      <div id="historyView" class="view hidden">
-        <div class="card"><div class="card-title">Histórico</div><p class="muted">Nenhuma alteração registrada ainda.</p></div>
-      </div>
     </section>
+
+
+    <!-- EDITOR -->
+
+    <section
+      id="editor"
+      data-view="editor"
+      class="hidden"
+    >
+
+      <div class="card">
+
+        <h2 id="projectNameDisplay">
+          Projeto
+        </h2>
+
+        <p id="projectDescription"></p>
+
+      </div>
+
+      <div class="editor-layout">
+
+        <div class="file-panel">
+
+          <h3>Arquivos</h3>
+
+          <div id="fileList"></div>
+
+        </div>
+
+        <div class="code-panel">
+
+          <div
+            id="currentFileName"
+            class="file-title"
+          >
+            Nenhum arquivo selecionado
+          </div>
+
+          <textarea
+            id="codeEditor"
+            spellcheck="false"
+            placeholder="O código do arquivo aparecerá aqui..."
+          ></textarea>
+
+          <div class="actions">
+
+            <button
+              id="saveFile"
+              class="primary"
+            >
+              Salvar arquivo
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PROJETOS -->
+
+    <section
+      id="projectsView"
+      data-view="projects"
+      class="hidden"
+    >
+
+      <div class="card">
+
+        <h2>Projetos</h2>
+
+        <div id="projectList"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ARQUIVOS -->
+
+    <section
+      id="filesView"
+      data-view="files"
+      class="hidden"
+    >
+
+      <div class="card">
+
+        <h2>Arquivos</h2>
+
+        <p>
+          Os arquivos do projeto selecionado aparecerão aqui.
+        </p>
+
+        <div id="fileListSecondary"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HISTÓRICO -->
+
+    <section
+      id="historyView"
+      data-view="history"
+      class="hidden"
+    >
+
+      <div class="card">
+
+        <h2>Histórico</h2>
+
+        <p>
+          Histórico dos projetos gerados pelo Rolles.
+        </p>
+
+      </div>
+
+    </section>
+
   </main>
-  <script src="app.js"></script>
+
+</div>
+
+<script src="/app.js"></script>
+
 </body>
-</html>
+      </html>
